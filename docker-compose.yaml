@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    ports:
+      - "${API_PORT}:8080"
+    volumes:
+      - type: bind
+        source: ./
+        target: /app/
+        consistency: delegated
+    depends_on:
+      postgres:
+        condition: service_started
+        restart: true
+      redis:
+        condition: service_started
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_NAME: ${POSTGRES_NAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+    networks:
+      - cs-network
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: cs-api
+      POSTGRES_NAME: test
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - cs-network
+
+  redis:
+    image: redis:6.2
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    container_name: redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - cs-network
+
+networks:
+  cs-network:
+    name: cs-network
+    driver: bridge
+    external: true
