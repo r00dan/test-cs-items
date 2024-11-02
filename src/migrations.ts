@@ -22,18 +22,14 @@ async function createItemsTable() {
   await sql`
       CREATE TABLE IF NOT EXISTS items (
         id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        tradable BOOL NOT NULL,
         market_hash_name VARCHAR(255) NOT NULL,
-        currency VARCHAR(10) NOT NULL,
-        suggested_price DECIMAL(10, 2) NOT NULL,
-        item_page VARCHAR(255) NOT NULL,
-        market_page VARCHAR(255) NOT NULL,
-        min_price DECIMAL(10, 2) NOT NULL,
-        max_price DECIMAL(10, 2) NOT NULL,
-        mean_price DECIMAL(10, 2) NOT NULL,
-        median_price DECIMAL(10, 2) NOT NULL,
+        currency VARCHAR(5) NOT NULL,
+        min_price DECIMAL(10, 2) NULL,
+        max_price DECIMAL(10, 2) NULL,
+        mean_price DECIMAL(10, 2) NULL,
         quantity INTEGER NOT NULL,
-        created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP DEFAULT NOW()
+        created_at TIMESTAMP DEFAULT NOW()
       );
     `;
 }

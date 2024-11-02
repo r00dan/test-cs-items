@@ -11,6 +11,10 @@ import { UsersModule } from "./modules/users/users.module";
 import { UsersRoutes } from "./modules/users/users.routes";
 import { AuthModule } from "./modules/auth/auth.module";
 import { AuthRoutes } from "./modules/auth/auth.routes";
+import {
+  getNonTradableItemsAndPopulateDB,
+  getTradableItemsAndPopulateDB,
+} from "./modules/items/populateItems";
 
 declare module "express-session" {
   interface SessionData {
@@ -31,6 +35,9 @@ export class App {
   public async start(port: number) {
     try {
       await runMigrations();
+      await getTradableItemsAndPopulateDB();
+      await getNonTradableItemsAndPopulateDB();
+
       this.app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
       });
