@@ -17,6 +17,9 @@ export const PurchasesToken = {
 
 export const ItemsToken = {
   ItemsRepository: Symbol.for("ItemsRepository"),
+  ItemsService: Symbol.for("ItemsService"),
+  ItemsController: Symbol.for("ItemsController"),
+  ItemsRoutes: Symbol.for("ItemsRoutes"),
 };
 
 export const AuthToken = {

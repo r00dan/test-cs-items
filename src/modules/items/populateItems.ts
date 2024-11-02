@@ -37,7 +37,7 @@ export async function getTradableItemsAndPopulateDB() {
           }, ${item.max_price}, ${item.mean_price}, ${item.quantity})`;
         }
       });
-      console.log("tradable items populated!");
+      console.log("tradable items successfully populated!");
     }
   } catch (error) {
     console.error(error);
@@ -60,7 +60,7 @@ export async function getNonTradableItemsAndPopulateDB() {
           }, ${item.max_price}, ${item.mean_price}, ${item.quantity})`;
         }
       });
-      console.log("non tradable items populated!");
+      console.log("non tradable items successfully populated!");
     }
   } catch (error) {
     console.error(error);

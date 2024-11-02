@@ -3,7 +3,6 @@ import { injectable } from "inversify";
 import { sql } from "../../core/database";
 import { UsersModel } from "./users.model";
 import { CreateUserDto } from "./dtos/create-user.dto";
-import { UpdatePasswordDto } from "./dtos/update-password.dto";
 
 @injectable()
 export class UsersRepository {

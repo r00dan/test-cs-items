@@ -47,9 +47,36 @@ async function createPurchasesTable() {
     `;
 }
 
+async function checkIndexesNotExist(indexName: string) {
+  const index = await sql`
+  SELECT EXISTS (
+    SELECT 1 
+    FROM pg_indexes 
+    WHERE tablename = 'items' AND indexname = ${indexName}
+  ) AS exists;`;
+
+  return index[0].exists;
+}
+
+async function addItemsIndexes() {
+  const indexName = "idx_items_market_hash_tradable";
+  try {
+    const isIndexExists = await checkIndexesNotExist(indexName);
+
+    if (!isIndexExists) {
+      console.log("creating indexes...");
+      await sql`create index idx_items_market_hash_tradable on items (market_hash_name, tradable);`;
+      console.log("indexes successfully created!");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function runMigrations() {
   await createUUIDExtension();
   await createUsersTable();
   await createItemsTable();
   await createPurchasesTable();
+  await addItemsIndexes();
 }
