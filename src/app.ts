@@ -44,7 +44,6 @@ export class App {
           host: process.env.REDIS_HOST,
           port: Number(process.env.REDIS_PORT),
         });
-        // await this.redis.connect();
       } catch (error) {
         console.error(error);
       }

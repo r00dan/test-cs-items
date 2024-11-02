@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 
 import { UsersToken } from "../../core/inversify-tokens";
 import { UsersController } from "./users.controller";
+import { isAuthenticated } from "../../core/middlewares/is-authenticated.middleware";
 
 @injectable()
 export class UsersRoutes {
@@ -20,8 +21,8 @@ export class UsersRoutes {
     this.router.post("/", (req, res) =>
       this.usersController.createUser(req, res)
     );
-    this.router.get("/", (req, res) =>
-      this.usersController.getUserList(req, res)
+    this.router.put("/password", isAuthenticated, (req, res) =>
+      this.usersController.updatePassword(req, res)
     );
   }
 }

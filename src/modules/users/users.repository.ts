@@ -3,6 +3,7 @@ import { injectable } from "inversify";
 import { sql } from "../../core/database";
 import { UsersModel } from "./users.model";
 import { CreateUserDto } from "./dtos/create-user.dto";
+import { UpdatePasswordDto } from "./dtos/update-password.dto";
 
 @injectable()
 export class UsersRepository {
@@ -38,5 +39,12 @@ export class UsersRepository {
       returning *
     `;
     return user;
+  }
+
+  public async updateUserPassword(id: string, password: string): Promise<void> {
+    await sql<UsersModel[]>`
+      update users set password = ${password}
+      where id = ${id}
+    `;
   }
 }

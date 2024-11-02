@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { UsersToken } from "../../core/inversify-tokens";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dtos/create-user.dto";
+import { UpdatePasswordDto } from "./dtos/update-password.dto";
 
 @injectable()
 export class UsersController {
@@ -28,11 +29,14 @@ export class UsersController {
     }
   }
 
-  public async getUserList(req: Request, res: Response) {
-    try {
-      const users = await this.usersService.getUserList();
+  public async updatePassword(req: Request, res: Response) {
+    const userId = req.session.userId;
+    const dto = req.body as UpdatePasswordDto;
 
-      res.status(200).json(users);
+    try {
+      await this.usersService.updatePassword(userId, dto);
+
+      res.status(201).json({ status: "success" });
     } catch (error) {
       res.status(500).json({ error: "Internal error." });
     }

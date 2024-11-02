@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { UsersToken } from "../../core/inversify-tokens";
 import { UsersRepository } from "./users.repository";
 import { CreateUserDto } from "./dtos/create-user.dto";
+import { UpdatePasswordDto } from "./dtos/update-password.dto";
 
 @injectable()
 export class UsersService {
@@ -28,6 +29,12 @@ export class UsersService {
     const hash = await this.encodePassword(dto.password);
 
     return await this.usersRepository.createUser({ ...dto, password: hash });
+  }
+
+  public async updatePassword(id: string, dto: UpdatePasswordDto) {
+    const hash = await this.encodePassword(dto.password);
+
+    await this.usersRepository.updateUserPassword(id, hash);
   }
 
   private async encodePassword(raw: string) {
