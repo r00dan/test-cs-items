@@ -1,9 +1,9 @@
 import { Container } from "inversify";
 
+import { HealthToken } from "../../core/inversify-tokens";
 import { HealthController } from "./health.controller";
 import { HealthService } from "./health.service";
 import { HealthRoutes } from "./health.routes";
-import { HealthToken } from "../../inversify-tokens";
 
 const HealthModule = new Container();
 

@@ -3,12 +3,14 @@
     "target": "ES6",
     "module": "commonjs",
     "strict": true,
+    "removeComments": true,
     "esModuleInterop": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "strictNullChecks": false
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/migrations.ts"],
   "exclude": ["node_modules"]
 }

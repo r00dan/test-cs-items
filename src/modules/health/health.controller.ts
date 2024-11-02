@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
 
 import { HealthService } from "./health.service";
-import { HealthToken } from "../../inversify-tokens";
+import { HealthToken } from "../../core/inversify-tokens";
 
 @injectable()
 export class HealthController {

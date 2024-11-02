@@ -19,11 +19,12 @@ services:
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_NAME: ${POSTGRES_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_NAME: ${POSTGRES_NAME}
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
+      SESSION_SECRET: ${SESSION_SECRET}
     networks:
       - cs-network
 
@@ -32,9 +33,9 @@ services:
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: test
-      POSTGRES_USER: cs-api
-      POSTGRES_NAME: test
+      POSTGRES_DB: ${POSTGRES_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - ${POSTGRES_PORT}:5432
     volumes:
@@ -52,6 +53,9 @@ services:
       - "${REDIS_PORT}:6379"
     networks:
       - cs-network
+
+volumes:
+  pgdata:
 
 networks:
   cs-network:
