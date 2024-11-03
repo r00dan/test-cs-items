@@ -18,6 +18,9 @@ export class UsersRoutes {
   }
 
   private routes() {
+    this.router.get("/", isAuthenticated, (req, res) =>
+      this.usersController.getUser(req, res)
+    );
     this.router.post("/", (req, res) =>
       this.usersController.createUser(req, res)
     );

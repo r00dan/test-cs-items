@@ -9,6 +9,7 @@ import {
   AuthToken,
   HealthToken,
   ItemsToken,
+  PurchasesToken,
   UsersToken,
 } from "./core/inversify-tokens";
 import { runMigrations } from "./migrations";
@@ -23,6 +24,8 @@ import {
 import { ItemsModule } from "./modules/items/items.module";
 import { ItemsRoutes } from "./modules/items/items.routes";
 import { Cache } from "./core/cache";
+import { PurchasesModule } from "./modules/purchases/purchases.module";
+import { PurchasesRoutes } from "./modules/purchases/purchases.routes";
 
 declare module "express-session" {
   interface SessionData {
@@ -74,10 +77,14 @@ export class App {
     const usersRoutes = UsersModule.get<UsersRoutes>(UsersToken.UsersRoutes);
     const authRoutes = AuthModule.get<AuthRoutes>(AuthToken.AuthRoutes);
     const itemsRoutes = ItemsModule.get<ItemsRoutes>(ItemsToken.ItemsRoutes);
+    const purchasesRoutes = PurchasesModule.get<PurchasesRoutes>(
+      PurchasesToken.PurchasesRoutes
+    );
 
     this.app.use("/health", healthRoutes.router);
     this.app.use("/user", usersRoutes.router);
     this.app.use("/auth", authRoutes.router);
     this.app.use("/item", itemsRoutes.router);
+    this.app.use("/purchase", purchasesRoutes.router);
   }
 }

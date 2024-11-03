@@ -7,8 +7,12 @@ import { ItemsRepository } from "./items.repository";
 export class ItemsService {
   constructor(
     @inject(ItemsToken.ItemsRepository)
-    private readonly itemsRepository: ItemsRepository
+    private readonly itemsRepository: ItemsRepository,
   ) {}
+
+  public async getItemById(itemId: string) {
+    return await this.itemsRepository.getItemById(itemId);
+  }
 
   public async getPurchasableItemList() {
     return await this.itemsRepository.getPurchasableItemList();

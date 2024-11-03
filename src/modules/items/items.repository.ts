@@ -1,20 +1,10 @@
 import { injectable } from "inversify";
+import { Redis } from "ioredis";
+import postgres from "postgres";
 
 import { sql } from "../../core/database";
 import { Cache } from "../../core/cache";
-import { Redis } from "ioredis";
-
-export interface Item {
-  id: string;
-  tradable: boolean;
-  market_hash_name: string;
-  currency: string;
-  min_price: number;
-  max_price: number;
-  mean_price: number;
-  quantity: number;
-  created_at: number;
-}
+import { ItemModel } from "./items.model";
 
 @injectable()
 export class ItemsRepository {
@@ -23,6 +13,15 @@ export class ItemsRepository {
 
   constructor() {
     this.redis = Cache.getInstance().redis;
+  }
+
+  public async getItemById(id: string, transaction?: postgres.TransactionSql) {
+    const users = transaction
+      ? await transaction<
+          ItemModel[]
+        >`select * from items where id=${id} limit 1`
+      : await sql<ItemModel[]>`select * from items where id=${id} limit 1`;
+    return users[0] || null;
   }
 
   public async getPurchasableItemList() {

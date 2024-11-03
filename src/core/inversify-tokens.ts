@@ -13,6 +13,9 @@ export const UsersToken = {
 
 export const PurchasesToken = {
   PurchasesRepository: Symbol.for("PurchasesRepository"),
+  PurchasesService: Symbol.for("PurchasesService"),
+  PurchasesController: Symbol.for("PurchasesController"),
+  PurchasesRoutes: Symbol.for("PurchasesRoutes"),
 };
 
 export const ItemsToken = {

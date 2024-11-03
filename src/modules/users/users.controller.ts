@@ -12,6 +12,19 @@ export class UsersController {
     @inject(UsersToken.UsersService) private readonly usersService: UsersService
   ) {}
 
+  public async getUser(req: Request, res: Response) {
+    const userId = req.session.userId;
+
+    try {
+      const user = await this.usersService.getUserById(userId);
+
+      res.status(201).json({ ...user, password: undefined });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal error." });
+    }
+  }
+
   public async createUser(req: Request, res: Response) {
     const dto = req.body as CreateUserDto;
 
