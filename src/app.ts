@@ -22,6 +22,7 @@ import {
 } from "./modules/items/populateItems";
 import { ItemsModule } from "./modules/items/items.module";
 import { ItemsRoutes } from "./modules/items/items.routes";
+import { Cache } from "./core/cache";
 
 declare module "express-session" {
   interface SessionData {
@@ -31,7 +32,6 @@ declare module "express-session" {
 
 export class App {
   public app: Application;
-  private redis: Redis | null = null;
 
   constructor() {
     this.app = express();
@@ -51,25 +51,14 @@ export class App {
     } catch (error) {}
   }
 
-  private async connectRedis() {
-    if (!this.redis) {
-      try {
-        this.redis = new Redis({
-          host: process.env.REDIS_HOST,
-          port: Number(process.env.REDIS_PORT),
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-
   private middlewares() {
     this.app.use(express.json());
-    this.connectRedis();
+
+    const { redis } = Cache.getInstance();
+
     this.app.use(
       session({
-        store: new RedisStore({ client: this.redis }),
+        store: new RedisStore({ client: redis }),
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
