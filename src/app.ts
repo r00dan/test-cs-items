@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import session from "express-session";
 import RedisStore from "connect-redis";
-import Redis from "ioredis";
+import { serve, setup } from "swagger-ui-express";
 
 import { HealthModule } from "./modules/health/health.module";
 import { HealthRoutes } from "./modules/health/health.routes";
@@ -26,6 +26,7 @@ import { ItemsRoutes } from "./modules/items/items.routes";
 import { Cache } from "./core/cache";
 import { PurchasesModule } from "./modules/purchases/purchases.module";
 import { PurchasesRoutes } from "./modules/purchases/purchases.routes";
+import swaggerDocs from "./core/swagger";
 
 declare module "express-session" {
   interface SessionData {
@@ -81,6 +82,7 @@ export class App {
       PurchasesToken.PurchasesRoutes
     );
 
+    this.app.use("/swagger", serve, setup(swaggerDocs));
     this.app.use("/health", healthRoutes.router);
     this.app.use("/user", usersRoutes.router);
     this.app.use("/auth", authRoutes.router);

@@ -18,6 +18,18 @@ export class UsersRoutes {
   }
 
   private routes() {
+    /**
+     * @swagger
+     * /:
+     *   get:
+     *     summary: Retrieve a user
+     *     tags: [Users]
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved user.
+     *       401:
+     *         description: Unauthorized.
+     */
     this.router.get("/", isAuthenticated, (req, res) =>
       this.usersController.getUser(req, res)
     );
