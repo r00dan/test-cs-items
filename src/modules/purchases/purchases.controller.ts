@@ -13,7 +13,6 @@ export class PurchasesController {
 
   public async getPurchases(req: Request, res: Response) {
     const userId = req.session.userId;
-    console.log({ userId });
 
     try {
       const purchases = await this.purchasesService.getPurchases(userId);
@@ -38,7 +37,11 @@ export class PurchasesController {
       res.status(200).json({ ...updatedUser, password: undefined });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Internal error." });
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: "An unknown error occurred" });
+      }
     }
   }
 }

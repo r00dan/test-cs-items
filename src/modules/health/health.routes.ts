@@ -17,6 +17,16 @@ export class HealthRoutes {
   }
 
   private routes() {
+    /**
+     * @swagger
+     * /health:
+     *   get:
+     *     summary: Healthcheck endpoint
+     *     tags: [Health]
+     *     responses:
+     *       200:
+     *        description: Simple healthcheck response
+     */
     this.router.get("/", (req, res) =>
       this.healthController.checkHealth(req, res)
     );

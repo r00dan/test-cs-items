@@ -2,7 +2,7 @@ import Swagger from "swagger-jsdoc";
 
 const swaggerOptions = {
   definition: {
-    openapi: "3.0.0",
+    openapi: "3.1.0",
     info: {
       title: "API Documentation",
       version: "1.0.0",
@@ -14,7 +14,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./dist/modules/**/*.routes.js"],
+  apis: ["./src/modules/**/*.routes.ts"],
 };
 
 const swaggerDocs = Swagger(swaggerOptions);

@@ -51,6 +51,7 @@ export class App {
 
       this.app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
+        console.log(`Swagger is available at http://localhost:${port}/swagger`);
       });
     } catch (error) {}
   }

@@ -26,51 +26,40 @@ export class PurchasesService {
   }
 
   public async createPurchase(itemId: string, userId: string) {
-    try {
-      return await sql.begin(async (transaction) => {
-        const item = await this.itemsRepository.getItemById(
-          itemId,
-          transaction
-        );
+    return await sql.begin(async (transaction) => {
+      const item = await this.itemsRepository.getItemById(itemId, transaction);
 
-        if (!item) {
-          throw new Error("Item not found.");
-        }
+      if (!item) {
+        throw new Error("Item not found.");
+      }
 
-        const itemPrice = item.min_price;
-        const isItemTradable = item.tradable;
+      const itemPrice = item.min_price;
+      const isItemTradable = item.tradable;
 
-        if (!isItemTradable) {
-          throw new Error(`Item is not tradable.`);
-        }
+      if (!isItemTradable) {
+        throw new Error(`Item is not tradable.`);
+      }
 
-        const user = await this.usersRepository.getUserById(
-          userId,
-          transaction
-        );
-        const userBalance = user.balance;
+      const user = await this.usersRepository.getUserById(userId, transaction);
+      const userBalance = user.balance;
 
-        if (userBalance < itemPrice) {
-          throw new Error(`Not enough money to buy this item.`);
-        }
+      if (Number(userBalance) < Number(itemPrice)) {
+        throw new Error(`Not enough money to buy this item.`);
+      }
 
-        const updatedUser = await this.usersRepository.withdrawFromBalance(
-          userId,
-          itemPrice,
-          transaction
-        );
+      const updatedUser = await this.usersRepository.withdrawFromBalance(
+        userId,
+        itemPrice,
+        transaction
+      );
 
-        const purchase = await this.purchasesRepository.createPurchase(
-          userId,
-          itemId,
-          transaction
-        );
+      const purchase = await this.purchasesRepository.createPurchase(
+        userId,
+        itemId,
+        transaction
+      );
 
-        return { updatedUser, purchase };
-      });
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+      return { updatedUser, purchase };
+    });
   }
 }

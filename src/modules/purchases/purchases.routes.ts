@@ -18,9 +18,38 @@ export class PurchasesRoutes {
   }
 
   private routes() {
+    /**
+     * @swagger
+     * /purchase:
+     *   get:
+     *     summary: List user's purchases
+     *     tags: [Purchases]
+     *     responses:
+     *       200:
+     *        description: Shows list of user's purchases
+     */
     this.router.get("/", isAuthenticated, (req, res) =>
       this.purchasesController.getPurchases(req, res)
     );
+    /**
+     * @swagger
+     * /purchase/item/:id:
+     *   post:
+     *     summary: Purchase an item
+     *     tags: [Purchases]
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Item ID
+     *     responses:
+     *       201:
+     *         description: Successful purchase
+     *       401:
+     *         description: Unauthorized.
+     */
     this.router.post("/item/:id", isAuthenticated, (req, res) =>
       this.purchasesController.purchaseItem(req, res)
     );

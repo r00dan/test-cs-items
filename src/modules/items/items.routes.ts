@@ -17,6 +17,16 @@ export class ItemsRoutes {
   }
 
   private routes() {
+    /**
+     * @swagger
+     * /item:
+     *   get:
+     *     summary: List items
+     *     tags: [Items]
+     *     responses:
+     *       200:
+     *        description: Shows list of items with price
+     */
     this.router.get("/", (req, res) =>
       this.itemsController.getPurchasableItemList(req, res)
     );
